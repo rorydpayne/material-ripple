@@ -62,6 +62,7 @@ app:mrl_rippleFadeDuration="75"           // duration of fade out effect on ripp
 app:mrl_rippleDelayClick="true"           // if true, delays calls to OnClickListeners until ripple effect ends
 app:mrl_rippleBackground="#FFFFFF"        // background under ripple drawable; used with rippleOverlay="false"
 app:mrl_ripplePersistent="true"           // if true, ripple background color persists after animation, until setRadius(0) is called
+app:mrl_rippleCenter="true"               // if true, ripple originates from center of child that has been pressed rather than the location of the press event. Default: false
 ```
 
 Set an `OnClickListener` to `MaterialRippleLayout`:
