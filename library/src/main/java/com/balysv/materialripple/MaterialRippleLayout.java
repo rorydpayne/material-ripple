@@ -65,7 +65,7 @@ public class MaterialRippleLayout extends FrameLayout {
     private static final boolean DEFAULT_SEARCH_ADAPTER  = false;
     private static final boolean DEFAULT_RIPPLE_OVERLAY  = false;
     private static final int     DEFAULT_ROUNDED_CORNERS = 0;
-    private static final boolean DEFAULD_CENTER = false;
+    private static final boolean DEFAULT_RIPPLE_CENTER = false;
 
     private static final int  FADE_EXTRA_DELAY = 50;
     private static final long HOVER_DURATION   = 2500;
@@ -142,7 +142,7 @@ public class MaterialRippleLayout extends FrameLayout {
         ripplePersistent = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_ripplePersistent, DEFAULT_PERSISTENT);
         rippleInAdapter = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_rippleInAdapter, DEFAULT_SEARCH_ADAPTER);
         rippleRoundedCorners = a.getDimensionPixelSize(R.styleable.MaterialRippleLayout_mrl_rippleRoundedCorners, DEFAULT_ROUNDED_CORNERS);
-        rippleCenter = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_rippleCenter, DEFAULD_CENTER);
+        rippleCenter = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_rippleCenter, DEFAULT_RIPPLE_CENTER);
 
         a.recycle();
 
@@ -612,6 +612,14 @@ public class MaterialRippleLayout extends FrameLayout {
         invalidate();
     }
 
+    public boolean isRippleCenter() {
+        return rippleCenter;
+    }
+
+    public void setRippleCenter(boolean rippleCenter) {
+        this.rippleCenter = rippleCenter;
+    }
+
     public void performRipple() {
         currentCoords = new Point(getWidth() / 2, getHeight() / 2);
         startRipple(null);
@@ -715,6 +723,7 @@ public class MaterialRippleLayout extends FrameLayout {
         private int     rippleBackground    = DEFAULT_BACKGROUND;
         private boolean rippleSearchAdapter = DEFAULT_SEARCH_ADAPTER;
         private float   rippleRoundedCorner = DEFAULT_ROUNDED_CORNERS;
+        private boolean rippleCenter        = DEFAULT_RIPPLE_CENTER;
 
         public RippleBuilder(View child) {
             this.child = child;
@@ -781,6 +790,11 @@ public class MaterialRippleLayout extends FrameLayout {
             return this;
         }
 
+        public RippleBuilder rippleCenter(boolean center) {
+            this.rippleCenter = center;
+            return this;
+        }
+
         public MaterialRippleLayout create() {
             MaterialRippleLayout layout = new MaterialRippleLayout(context);
             layout.setRippleColor(rippleColor);
@@ -795,6 +809,7 @@ public class MaterialRippleLayout extends FrameLayout {
             layout.setRippleBackground(rippleBackground);
             layout.setRippleInAdapter(rippleSearchAdapter);
             layout.setRippleRoundedCorners((int) dpToPx(context.getResources(), rippleRoundedCorner));
+            layout.setRippleCenter(rippleCenter);
 
             ViewGroup.LayoutParams params = child.getLayoutParams();
             ViewGroup parent = (ViewGroup) child.getParent();
