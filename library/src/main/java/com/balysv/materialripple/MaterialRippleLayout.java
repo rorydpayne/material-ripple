@@ -65,6 +65,7 @@ public class MaterialRippleLayout extends FrameLayout {
     private static final boolean DEFAULT_SEARCH_ADAPTER  = false;
     private static final boolean DEFAULT_RIPPLE_OVERLAY  = false;
     private static final int     DEFAULT_ROUNDED_CORNERS = 0;
+    private static final boolean DEFAULD_CENTER = false;
 
     private static final int  FADE_EXTRA_DELAY = 50;
     private static final long HOVER_DURATION   = 2500;
@@ -84,6 +85,7 @@ public class MaterialRippleLayout extends FrameLayout {
     private Drawable rippleBackground;
     private boolean  rippleInAdapter;
     private float    rippleRoundedCorners;
+    private boolean rippleCenter;
 
     private float radius;
 
@@ -127,8 +129,8 @@ public class MaterialRippleLayout extends FrameLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialRippleLayout);
         rippleColor = a.getColor(R.styleable.MaterialRippleLayout_mrl_rippleColor, DEFAULT_COLOR);
         rippleDiameter = a.getDimensionPixelSize(
-            R.styleable.MaterialRippleLayout_mrl_rippleDimension,
-            (int) dpToPx(getResources(), DEFAULT_DIAMETER_DP)
+                R.styleable.MaterialRippleLayout_mrl_rippleDimension,
+                (int) dpToPx(getResources(), DEFAULT_DIAMETER_DP)
         );
         rippleOverlay = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_rippleOverlay, DEFAULT_RIPPLE_OVERLAY);
         rippleHover = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_rippleHover, DEFAULT_HOVER);
@@ -140,6 +142,7 @@ public class MaterialRippleLayout extends FrameLayout {
         ripplePersistent = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_ripplePersistent, DEFAULT_PERSISTENT);
         rippleInAdapter = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_rippleInAdapter, DEFAULT_SEARCH_ADAPTER);
         rippleRoundedCorners = a.getDimensionPixelSize(R.styleable.MaterialRippleLayout_mrl_rippleRoundedCorners, DEFAULT_ROUNDED_CORNERS);
+        rippleCenter = a.getBoolean(R.styleable.MaterialRippleLayout_mrl_rippleCenter, DEFAULD_CENTER);
 
         a.recycle();
 
@@ -196,7 +199,7 @@ public class MaterialRippleLayout extends FrameLayout {
 
         if (isEventInBounds) {
             previousCoords.set(currentCoords.x, currentCoords.y);
-            currentCoords.set((int) event.getX(), (int) event.getY());
+            setCurrentCoordinates(event);
         }
 
         boolean gestureResult = gestureDetector.onTouchEvent(event);
@@ -277,6 +280,13 @@ public class MaterialRippleLayout extends FrameLayout {
             }
             return true;
         }
+    }
+
+    private void setCurrentCoordinates(MotionEvent event) {
+        if (rippleCenter)
+            currentCoords.set(bounds.centerX(), bounds.centerY());
+        else
+            currentCoords.set((int) event.getX(), (int) event.getY());
     }
 
     private void cancelPressedEvent() {
